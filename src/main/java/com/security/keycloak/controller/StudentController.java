@@ -16,11 +16,13 @@ public class StudentController {
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('user')")
     public Student addStudent(@RequestBody StudentDto studentDto) {
         return studentService.addStudent(studentDto);
     }
 
     @GetMapping("/{name}")
+    @PreAuthorize("hasRole('flyer')")
     public Student getStudentByName(@PathVariable String name) {
         return studentService.findByName(name);
     }
