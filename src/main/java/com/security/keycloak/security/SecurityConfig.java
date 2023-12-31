@@ -18,12 +18,12 @@ public class SecurityConfig {
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
         httpSecurity.authorizeHttpRequests(authorize ->
                 authorize
-                        .requestMatchers(HttpMethod.GET, "/student/{name}").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/student/add").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/student/{name}").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/student/add").permitAll()
                         .anyRequest().authenticated()
         );
         httpSecurity.oauth2ResourceServer(oauth2 -> {
-            oauth2.jwt(Customizer.withDefaults());
+            oauth2.opaqueToken(Customizer.withDefaults());
         });
         httpSecurity.sessionManagement(session -> {
             session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
