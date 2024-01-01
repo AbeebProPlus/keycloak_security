@@ -29,6 +29,7 @@ public class SecurityConfig {
                 authorize
 //                        .requestMatchers(HttpMethod.GET, "/student/{name}").permitAll()
 //                        .requestMatchers(HttpMethod.POST, "/student/add").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated()
         );
         httpSecurity.oauth2ResourceServer(oauth2 -> {

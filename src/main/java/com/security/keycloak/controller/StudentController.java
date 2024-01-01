@@ -3,11 +3,13 @@ package com.security.keycloak.controller;
 import com.security.keycloak.dto.StudentDto;
 import com.security.keycloak.service.StudentService;
 import com.security.keycloak.model.Student;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/student")
+@SecurityRequirement(name = "Keycloak")
 public class StudentController {
     private final StudentService studentService;
 
