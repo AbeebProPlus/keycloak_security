@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -31,6 +33,7 @@ public class SecurityConfig {
         );
         httpSecurity.oauth2ResourceServer(oauth2 -> {
             oauth2.jwt(Customizer.withDefaults());
+//            oath2.jwt(jwt -> jwt.jwtAuthenticationConverter(converter()));
 //            oauth2.jwt(Customizer.withDefaults());
         });
         httpSecurity.sessionManagement(session -> {
@@ -46,5 +49,13 @@ public class SecurityConfig {
         defaultMethodSecurityExpressionHandler.setDefaultRolePrefix("");
         return defaultMethodSecurityExpressionHandler;
     }
-
+    @Bean
+    public JwtAuthenticationConverter converter() {
+        JwtAuthenticationConverter jwtAuthConverter =new JwtAuthenticationConverter();
+        JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+        jwtGrantedAuthoritiesConverter.setAuthorityPrefix(""); // Default "SCOPE_"
+        jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName("roles"); // Default "scope" or "scp"
+        jwtAuthConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
+        return jwtAuthConverter;
+    }
 }
