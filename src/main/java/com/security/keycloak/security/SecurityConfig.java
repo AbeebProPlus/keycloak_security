@@ -16,10 +16,10 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthConverter jwtAuthConverter;
+//    private final JwtAuthConverter jwtAuthConverter;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
@@ -30,7 +30,7 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
         );
         httpSecurity.oauth2ResourceServer(oauth2 -> {
-            oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter));
+            oauth2.jwt(Customizer.withDefaults());
 //            oauth2.jwt(Customizer.withDefaults());
         });
         httpSecurity.sessionManagement(session -> {
@@ -46,4 +46,5 @@ public class SecurityConfig {
         defaultMethodSecurityExpressionHandler.setDefaultRolePrefix("");
         return defaultMethodSecurityExpressionHandler;
     }
+
 }
