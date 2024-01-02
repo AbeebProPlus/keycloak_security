@@ -1,9 +1,6 @@
 package com.security.keycloak.security;
-
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -15,22 +12,23 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 //@RequiredArgsConstructor
 public class SecurityConfig {
 
-//    private final JwtAuthConverter jwtAuthConverter;
+    //    private final JwtAuthConverter jwtAuthConverter;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
         httpSecurity.authorizeHttpRequests(authorize ->
-                authorize
+                        authorize
 //                        .requestMatchers(HttpMethod.GET, "/student/{name}").permitAll()
 //                        .requestMatchers(HttpMethod.POST, "/student/add").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .anyRequest().authenticated()
+                                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**").permitAll()
+                                .anyRequest().authenticated()
         );
         httpSecurity.oauth2ResourceServer(oauth2 -> {
             oauth2.jwt(Customizer.withDefaults());
@@ -39,7 +37,8 @@ public class SecurityConfig {
         });
         httpSecurity.sessionManagement(session -> {
             session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        });
+        })
+        .headers(headers -> headers.frameOptions().sameOrigin());
         return httpSecurity.build();
     }
 
