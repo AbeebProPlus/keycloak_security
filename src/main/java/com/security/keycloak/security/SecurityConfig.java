@@ -38,7 +38,7 @@ public class SecurityConfig {
         httpSecurity.sessionManagement(session -> {
             session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         })
-        .headers(headers -> headers.frameOptions().sameOrigin());
+        .headers(headers -> headers.frameOptions().sameOrigin()); //deprecated
         return httpSecurity.build();
     }
 
