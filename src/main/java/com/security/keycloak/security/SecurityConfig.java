@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
@@ -38,7 +39,11 @@ public class SecurityConfig {
         httpSecurity.sessionManagement(session -> {
             session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         })
-        .headers(headers -> headers.frameOptions().sameOrigin()); //deprecated
+                .headers((headers) ->
+                        headers
+                                .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)
+                );
+//        .headers(headers -> headers.frameOptions().sameOrigin()); //deprecated
         return httpSecurity.build();
     }
 
