@@ -20,7 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
 //@RequiredArgsConstructor
 public class SecurityConfig {
 
-    //    private final JwtAuthConverter jwtAuthConverter;
+//        private final JwtAuthConverter jwtAuthConverter;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
@@ -58,8 +58,8 @@ public class SecurityConfig {
     public JwtAuthenticationConverter converter() {
         JwtAuthenticationConverter jwtAuthConverter =new JwtAuthenticationConverter();
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        jwtGrantedAuthoritiesConverter.setAuthorityPrefix(""); // Default "SCOPE_"
-        jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName("roles"); // Default "scope" or "scp"
+        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("");
+        jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName("roles");
         jwtAuthConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
         return jwtAuthConverter;
     }
