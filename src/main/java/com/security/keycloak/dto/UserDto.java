@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentDto {
-    private String name;
+public class UserDto {
+    private String userName;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
 }
