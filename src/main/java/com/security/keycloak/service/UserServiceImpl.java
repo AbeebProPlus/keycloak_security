@@ -1,5 +1,6 @@
 package com.security.keycloak.service;
 
+import com.security.keycloak.dto.AppUserDto;
 import com.security.keycloak.dto.UserDto;
 import com.security.keycloak.model.User;
 import com.security.keycloak.repo.UserRepo;
@@ -14,7 +15,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User addUser(UserDto userDto) {
+    public User addUser(AppUserDto userDto) {
         User user = User.builder()
                 .userName(userDto.getUserName())
                 .email(userDto.getEmail())

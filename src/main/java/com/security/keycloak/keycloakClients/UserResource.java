@@ -6,6 +6,7 @@
 //import java.util.Map;
 //
 //import com.security.keycloak.dto.Role;
+//import com.security.keycloak.dto.UserDto;
 //import com.security.keycloak.model.User;
 //import com.security.keycloak.security.KeycloakSecurityUtil;
 //import lombok.AllArgsConstructor;
@@ -33,7 +34,7 @@
 //
 //@RestController
 //@RequestMapping("/keycloak")
-//@SecurityRequirement(name = "Keycloak")
+//@SecurityRequirement(name = "keycloak")
 //@RequiredArgsConstructor
 //public class UserResource {
 //
@@ -44,7 +45,7 @@
 //
 //    @GetMapping
 //    @RequestMapping("/users")
-//    public List<User> getUsers() {
+//    public List<UserDto> getUsers() {
 //        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
 //        List<UserRepresentation> userRepresentations =
 //                keycloak.realm(realm).users().list();
@@ -52,22 +53,22 @@
 //    }
 //
 //    @GetMapping(value = "/users/{id}")
-//    public User getUser(@PathVariable("id") String id) {
+//    public UserDto getUser(@PathVariable("id") String id) {
 //        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
 //        return mapUser(keycloak.realm(realm).users().get(id).toRepresentation());
 //    }
 //
+//
 //    @PostMapping(value = "/user")
-//    @PreAuthorize("hasRole('user')")
-//    public Response createUser(User user) {
+//    public Response createUser(UserDto user) {
 //        UserRepresentation userRep = mapUserRep(user);
 //        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-//        Response res = keycloak.realm(realm).users().create(userRep);
+//        keycloak.realm(realm).users().create(userRep);
 //        return Response.ok(user).build();
 //    }
 //
 //    @PutMapping(value = "/user")
-//    public Response updateUser(User user) {
+//    public Response updateUser(UserDto user) {
 //        UserRepresentation userRep = mapUserRep(user);
 //        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
 //        keycloak.realm(realm).users().get(user.getId()).update(userRep);
@@ -81,12 +82,12 @@
 //        return Response.ok().build();
 //    }
 //
-//    @GetMapping(value = "/users/{id}/roles")
-//    public List<Role> getRoles(@PathVariable("id") String id) {
-//        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-//        return RoleResource.mapRoles(keycloak.realm(realm).users()
-//                .get(id).roles().realmLevel().listAll());
-//    }
+////    @GetMapping(value = "/users/{id}/roles")
+////    public List<Role> getRoles(@PathVariable("id") String id) {
+////        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
+////        return RoleResource.mapRoles(keycloak.realm(realm).users()
+////                .get(id).roles().realmLevel().listAll());
+////    }
 //
 //    @PostMapping(value = "/users/{id}/roles/{roleName}")
 //    public Response createRole(@PathVariable("id") String id,
@@ -97,8 +98,8 @@
 //        return Response.ok().build();
 //    }
 //
-//    private List<User> mapUsers(List<UserRepresentation> userRepresentations) {
-//        List<User> users = new ArrayList<>();
+//    private List<UserDto> mapUsers(List<UserRepresentation> userRepresentations) {
+//        List<UserDto> users = new ArrayList<>();
 //        if(CollectionUtil.isNotEmpty(userRepresentations)) {
 //            userRepresentations.forEach(userRep -> {
 //                users.add(mapUser(userRep));
@@ -107,8 +108,8 @@
 //        return users;
 //    }
 //
-//    private User mapUser(UserRepresentation userRep) {
-//        User user = new User();
+//    private UserDto mapUser(UserRepresentation userRep) {
+//        UserDto user = new UserDto();
 //        user.setId(userRep.getId());
 //        user.setFirstName(userRep.getFirstName());
 //        user.setLastName(userRep.getLastName());
@@ -117,7 +118,7 @@
 //        return user;
 //    }
 //
-//    private UserRepresentation mapUserRep(User user) {
+//    private UserRepresentation mapUserRep(UserDto user) {
 //        UserRepresentation userRep = new UserRepresentation();
 //        userRep.setId(user.getId());
 //        userRep.setUsername(user.getUserName());

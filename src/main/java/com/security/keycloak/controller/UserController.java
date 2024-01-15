@@ -1,5 +1,6 @@
 package com.security.keycloak.controller;
 
+import com.security.keycloak.dto.AppUserDto;
 import com.security.keycloak.dto.UserDto;
 import com.security.keycloak.service.UserService;
 import com.security.keycloak.model.User;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
-@SecurityRequirement(name = "Keycloak")
+@SecurityRequirement(name = "keycloak")
 public class UserController {
     private final UserService userService;
 
@@ -19,7 +20,7 @@ public class UserController {
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('user')")
-    public User addUser(@RequestBody UserDto userDto) {
+    public User addUser(@RequestBody AppUserDto userDto) {
         return userService.addUser(userDto);
     }
 

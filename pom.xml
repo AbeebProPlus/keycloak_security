@@ -68,20 +68,20 @@
         <dependency>
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-policy-enforcer</artifactId>
-            <version>22.0.5</version>
+            <version>22.0.3</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.keycloak/keycloak-core -->
         <dependency>
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-core</artifactId>
-            <version>22.0.5</version>
+            <version>22.0.3</version>
         </dependency>
 
 
         <dependency>
             <groupId>org.keycloak</groupId>
             <artifactId>keycloak-admin-client</artifactId>
-            <version>22.0.5</version>
+            <version>22.0.3</version>
         </dependency>
     </dependencies>
     <build>
