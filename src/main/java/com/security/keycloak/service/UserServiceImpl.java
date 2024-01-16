@@ -1,6 +1,7 @@
 package com.security.keycloak.service;
 
 import com.security.keycloak.dto.AppUserDto;
+import com.security.keycloak.dto.UpdateUserNameDto;
 import com.security.keycloak.dto.UserDto;
 import com.security.keycloak.model.User;
 import com.security.keycloak.repo.UserRepo;
@@ -29,5 +30,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUserName(String name) {
         return userRepo.findByUserName(name);
+    }
+
+    @Override
+    public User editUserName(UpdateUserNameDto updateUserNameDto) {
+        User user = userRepo.findById(updateUserNameDto.getUserId())
+                .orElseThrow(() -> new RuntimeException("USER NOT FOUND"));
+        user.setUserName(updateUserNameDto.getNewName());
+        return user;
     }
 }

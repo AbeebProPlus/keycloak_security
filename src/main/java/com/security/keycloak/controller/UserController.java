@@ -1,6 +1,7 @@
 package com.security.keycloak.controller;
 
 import com.security.keycloak.dto.AppUserDto;
+import com.security.keycloak.dto.UpdateUserNameDto;
 import com.security.keycloak.dto.UserDto;
 import com.security.keycloak.service.UserService;
 import com.security.keycloak.model.User;
@@ -28,6 +29,11 @@ public class UserController {
 //    @PreAuthorize("hasRole('flyer')")
     public User getUserByUserName(@PathVariable String name) {
         return userService.findByUserName(name);
+    }
+
+    @PutMapping("/update")
+    public User updateUserName(@RequestBody UpdateUserNameDto updateUserNameDto){
+        return userService.editUserName(updateUserNameDto);
     }
 
 }
