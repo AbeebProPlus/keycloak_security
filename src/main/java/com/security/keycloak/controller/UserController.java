@@ -19,13 +19,13 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    @PreAuthorize("hasRole('user')")
+//    @PreAuthorize("hasRole('user')")
     public User addUser(@RequestBody AppUserDto userDto) {
         return userService.addUser(userDto);
     }
 
     @GetMapping("/{name}")
-    @PreAuthorize("hasRole('flyer')")
+//    @PreAuthorize("hasRole('flyer')")
     public User getUserByUserName(@PathVariable String name) {
         return userService.findByUserName(name);
     }
