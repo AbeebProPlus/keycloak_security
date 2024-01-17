@@ -3,6 +3,8 @@ package com.security.keycloak.keycloakClients;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import com.security.keycloak.dto.Role;
 import com.security.keycloak.dto.UserDto;
 import com.security.keycloak.security.KeycloakSecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -73,12 +75,12 @@ public class UserResource {
         return Response.ok().build();
     }
 
-//    @GetMapping(value = "/users/{id}/roles")
-//    public List<Role> getRoles(@PathVariable("id") String id) {
-//        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-//        return RoleResource.mapRoles(keycloak.realm(realm).users()
-//                .get(id).roles().realmLevel().listAll());
-//    }
+    @GetMapping( "/users/{id}/roles")
+    public List<Role> getRoles(@PathVariable("id") String id) {
+        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
+        return RoleResource.mapRoles(keycloak.realm(realm).users()
+                .get(id).roles().realmLevel().listAll());
+    }
 
     @PostMapping("/users/{id}/roles/{roleName}")
     public Response createRole(@PathVariable("id") String id,
