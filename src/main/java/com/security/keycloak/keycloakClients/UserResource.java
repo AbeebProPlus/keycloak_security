@@ -36,15 +36,6 @@ public class UserResource {
     @Value("${realm}")
     private String realm;
 
-    @GetMapping
-    @RequestMapping("/users")
-    public List<UserDto> getUsers() {
-        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-        List<UserRepresentation> userRepresentations =
-                keycloak.realm(realm).users().list();
-        return mapUsers(userRepresentations);
-    }
-
     @GetMapping("/users/{id}")
     public UserDto getUser(@PathVariable("id") String id) {
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
@@ -55,6 +46,12 @@ public class UserResource {
     public ResponseEntity<Void> createUser(@RequestBody UserDto user) {
         keycloakService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+    @GetMapping
+    @RequestMapping("/users")
+    public ResponseEntity<List<UserDto>> getUsers() {
+        List<UserDto> users = keycloakService.getUsers();
+        return ResponseEntity.ok(users);
     }
 
     @PutMapping("/user")

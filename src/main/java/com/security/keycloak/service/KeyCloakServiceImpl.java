@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -50,6 +50,27 @@ public class KeyCloakServiceImpl implements KeycloakService{
         RoleRepresentation role = keycloak.realm(realm).roles().get(roleName).toRepresentation();
         keycloak.realm(realm).users().get(id).roles().realmLevel().add(Arrays.asList(role));
     }
+
+    public List<UserDto> getUsers() {
+        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
+        List<UserRepresentation> userRepresentations = keycloak.realm(realm).users().list();
+        return mapUsers(userRepresentations);
+    }
+    private List<UserDto> mapUsers(List<UserRepresentation> userRepresentations) {
+        return userRepresentations.stream()
+                .map(this::mapUser)
+                .collect(Collectors.toList());
+    }
+    private UserDto mapUser(UserRepresentation userRepresentation) {
+        UserDto userDto = new UserDto();
+        userDto.setId(userRepresentation.getId());
+        userDto.setFirstName(userRepresentation.getFirstName());
+        userDto.setLastName(userRepresentation.getLastName());
+        userDto.setEmail(userRepresentation.getEmail());
+        userDto.setUserName(userRepresentation.getUsername());
+        return userDto;
+    }
+
 
     private String extractUserIdFromLocation(URI location) {
         String path = location.getPath();
