@@ -1,5 +1,6 @@
 package com.security.keycloak.keycloakClients;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -52,6 +53,8 @@ public class UserResource {
     }
 
 
+
+
     @PostMapping("/user")
     public Response createUser(UserDto user) {
         UserRepresentation userRep = mapUserRep(user);
@@ -82,13 +85,32 @@ public class UserResource {
                 .get(id).roles().realmLevel().listAll());
     }
 
+
     @PostMapping("/users/{id}/roles/{roleName}")
-    public Response createRole(@PathVariable("id") String id,
-                               @PathVariable("roleName") String roleName) {
+    public Response createRole(@PathVariable String id,
+                               @PathVariable String roleName) {
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
         RoleRepresentation role = keycloak.realm(realm).roles().get(roleName).toRepresentation();
         keycloak.realm(realm).users().get(id).roles().realmLevel().add(Arrays.asList(role));
         return Response.ok().build();
+    }
+
+    @PostMapping("/users/with_role")
+    public Response createUserWithRole(UserDto user) {
+        UserRepresentation userRep = mapUserRep(user);
+        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
+        Response response = keycloak.realm(realm).users().create(userRep);
+        if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
+            URI location = response.getLocation();
+            String userId = extractUserIdFromLocation(location);
+            createRole(userId, "user");
+        }
+        return Response.ok(user).build();
+    }
+    private String extractUserIdFromLocation(URI location) {
+        String path = location.getPath();
+        String[] pathSegments = path.split("/");
+        return pathSegments[pathSegments.length - 1];
     }
 
     private List<UserDto> mapUsers(List<UserRepresentation> userRepresentations) {
