@@ -63,10 +63,9 @@ public class UserResource {
     }
 
     @DeleteMapping("/users/{id}")
-    public Response deleteUser(@PathVariable("id") String id) {
-        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-        keycloak.realm(realm).users().delete(id);
-        return Response.ok().build();
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") String id) {
+        keycloakService.deleteUserById(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping( "/users/{id}/roles")
@@ -90,25 +89,6 @@ public class UserResource {
     }
 
 
-    private List<UserDto> mapUsers(List<UserRepresentation> userRepresentations) {
-        List<UserDto> users = new ArrayList<>();
-        if(CollectionUtil.isNotEmpty(userRepresentations)) {
-            userRepresentations.forEach(userRep -> {
-                users.add(mapUser(userRep));
-            });
-        }
-        return users;
-    }
-
-    private UserDto mapUser(UserRepresentation userRep) {
-        UserDto user = new UserDto();
-        user.setId(userRep.getId());
-        user.setFirstName(userRep.getFirstName());
-        user.setLastName(userRep.getLastName());
-        user.setEmail(userRep.getEmail());
-        user.setUserName(userRep.getUsername());
-        return user;
-    }
 
     private UserRepresentation mapUserRep(UserDto user) {
         UserRepresentation userRep = new UserRepresentation();

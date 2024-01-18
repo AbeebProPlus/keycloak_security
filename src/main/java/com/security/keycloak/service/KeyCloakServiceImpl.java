@@ -59,6 +59,11 @@ public class KeyCloakServiceImpl implements KeycloakService{
     }
 
     @Override
+    public void deleteUserById(String id) {
+        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
+        keycloak.realm(realm).users().delete(id);
+    }
+    @Override
     public UserDto getUserById(String id) {
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
         UserRepresentation userRepresentation = keycloak.realm(realm).users().get(id).toRepresentation();

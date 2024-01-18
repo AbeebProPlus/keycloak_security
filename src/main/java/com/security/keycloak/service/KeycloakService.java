@@ -13,5 +13,8 @@ public interface KeycloakService {
     void createRoleForUser(String userId, String roleName);
 
     List<UserDto> getUsers();
+
+    void deleteUserById(String id);
+
     UserDto getUserById(String id);
 }
