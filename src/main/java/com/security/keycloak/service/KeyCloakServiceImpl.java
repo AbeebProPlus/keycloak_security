@@ -40,12 +40,12 @@ public class KeyCloakServiceImpl implements KeycloakService{
         if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
             URI location = response.getLocation();
             String userId = extractUserIdFromLocation(location);
-            createRole(userId, "user");
+            createRoleForUser(userId, "user");
         }
     }
 
     @Override
-    public void createRole(String id, String roleName) {
+    public void createRoleForUser(String id, String roleName) {
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
         RoleRepresentation role = keycloak.realm(realm).roles().get(roleName).toRepresentation();
         keycloak.realm(realm).users().get(id).roles().realmLevel().add(Arrays.asList(role));

@@ -80,9 +80,9 @@ public class UserResource {
     }
 
 
-    @PostMapping("/users/{id}/roles/{roleName}")
+    @PostMapping("/users/{id}/roles/{roleName}") //userId in keycloak
     public ResponseEntity<Void> createRoleForUser(@PathVariable String id, @PathVariable String roleName) {
-        keycloakService.createRole(id, roleName);
+        keycloakService.createRoleForUser(id, roleName);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
