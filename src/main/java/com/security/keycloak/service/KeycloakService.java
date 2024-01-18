@@ -7,4 +7,5 @@ import org.keycloak.representations.idm.UserRepresentation;
 public interface KeycloakService {
     void createUser(UserDto user);
     void createUserWithRole(UserDto userDto);
+    public void createRole(String id, String roleName);
 }

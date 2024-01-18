@@ -51,16 +51,6 @@ public class UserResource {
         return mapUser(keycloak.realm(realm).users().get(id).toRepresentation());
     }
 
-
-
-
-//    @PostMapping("/user")
-//    public Response createUser(UserDto user) {
-//        UserRepresentation userRep = mapUserRep(user);
-//        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-//        keycloak.realm(realm).users().create(userRep);
-//        return Response.ok(user).build();
-//    }
 @PostMapping("/user")
     public ResponseEntity<Void> createUser(@RequestBody UserDto user) {
         keycloakService.createUser(user);
@@ -91,12 +81,9 @@ public class UserResource {
 
 
     @PostMapping("/users/{id}/roles/{roleName}")
-    public Response createRole(@PathVariable String id,
-                               @PathVariable String roleName) {
-        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-        RoleRepresentation role = keycloak.realm(realm).roles().get(roleName).toRepresentation();
-        keycloak.realm(realm).users().get(id).roles().realmLevel().add(Collections.singletonList(role));
-        return Response.ok().build();
+    public ResponseEntity<Void> createRoleForUser(@PathVariable String id, @PathVariable String roleName) {
+        keycloakService.createRole(id, roleName);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PostMapping("/create-with-role")

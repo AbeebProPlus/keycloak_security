@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -42,7 +43,9 @@ public class KeyCloakServiceImpl implements KeycloakService{
             createRole(userId, "user");
         }
     }
-    private void createRole(String id, String roleName) {
+
+    @Override
+    public void createRole(String id, String roleName) {
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
         RoleRepresentation role = keycloak.realm(realm).roles().get(roleName).toRepresentation();
         keycloak.realm(realm).users().get(id).roles().realmLevel().add(Arrays.asList(role));
