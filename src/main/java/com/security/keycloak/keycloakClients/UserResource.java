@@ -8,6 +8,7 @@ import java.util.List;
 import com.security.keycloak.dto.Role;
 import com.security.keycloak.dto.UserDto;
 import com.security.keycloak.security.KeycloakSecurityUtil;
+import com.security.keycloak.service.KeycloakService;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.common.util.CollectionUtil;
@@ -15,13 +16,9 @@ import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.ws.rs.core.Response;
@@ -33,6 +30,7 @@ import jakarta.ws.rs.core.Response;
 public class UserResource {
 
     private final KeycloakSecurityUtil keycloakUtil;
+    private final KeycloakService keycloakService;
 
     @Value("${realm}")
     private String realm;
@@ -55,12 +53,17 @@ public class UserResource {
 
 
 
-    @PostMapping("/user")
-    public Response createUser(UserDto user) {
-        UserRepresentation userRep = mapUserRep(user);
-        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-        keycloak.realm(realm).users().create(userRep);
-        return Response.ok(user).build();
+//    @PostMapping("/user")
+//    public Response createUser(UserDto user) {
+//        UserRepresentation userRep = mapUserRep(user);
+//        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
+//        keycloak.realm(realm).users().create(userRep);
+//        return Response.ok(user).build();
+//    }
+@PostMapping("/user")
+    public ResponseEntity<Void> createUser(@RequestBody UserDto user) {
+        keycloakService.createUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/user")
@@ -86,32 +89,21 @@ public class UserResource {
     }
 
 
-    @PostMapping("/users/{id}/roles/{roleName}")
-    public Response createRole(@PathVariable String id,
-                               @PathVariable String roleName) {
+//    @PostMapping("/users/{id}/roles/{roleName}")
+    public Response createRole(String id,
+                               String roleName) {
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
         RoleRepresentation role = keycloak.realm(realm).roles().get(roleName).toRepresentation();
         keycloak.realm(realm).users().get(id).roles().realmLevel().add(Arrays.asList(role));
         return Response.ok().build();
     }
 
-    @PostMapping("/users/with_role")
-    public Response createUserWithRole(UserDto user) {
-        UserRepresentation userRep = mapUserRep(user);
-        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-        Response response = keycloak.realm(realm).users().create(userRep);
-        if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
-            URI location = response.getLocation();
-            String userId = extractUserIdFromLocation(location);
-            createRole(userId, "user");
-        }
-        return Response.ok(user).build();
+    @PostMapping("/create-with-role")
+    public ResponseEntity<Void> createUserWithRole(@RequestBody UserDto user) {
+        keycloakService.createUserWithRole(user);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-    private String extractUserIdFromLocation(URI location) {
-        String path = location.getPath();
-        String[] pathSegments = path.split("/");
-        return pathSegments[pathSegments.length - 1];
-    }
+
 
     private List<UserDto> mapUsers(List<UserRepresentation> userRepresentations) {
         List<UserDto> users = new ArrayList<>();
