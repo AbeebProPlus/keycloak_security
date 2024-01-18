@@ -51,10 +51,18 @@ public class KeyCloakServiceImpl implements KeycloakService{
         keycloak.realm(realm).users().get(id).roles().realmLevel().add(Arrays.asList(role));
     }
 
+    @Override
     public List<UserDto> getUsers() {
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
         List<UserRepresentation> userRepresentations = keycloak.realm(realm).users().list();
         return mapUsers(userRepresentations);
+    }
+
+    @Override
+    public UserDto getUserById(String id) {
+        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
+        UserRepresentation userRepresentation = keycloak.realm(realm).users().get(id).toRepresentation();
+        return mapUser(userRepresentation);
     }
     private List<UserDto> mapUsers(List<UserRepresentation> userRepresentations) {
         return userRepresentations.stream()

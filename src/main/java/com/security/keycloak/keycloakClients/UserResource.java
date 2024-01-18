@@ -37,12 +37,12 @@ public class UserResource {
     private String realm;
 
     @GetMapping("/users/{id}")
-    public UserDto getUser(@PathVariable("id") String id) {
-        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-        return mapUser(keycloak.realm(realm).users().get(id).toRepresentation());
+    public ResponseEntity<UserDto> getUser(@PathVariable("id") String id) {
+        UserDto user = keycloakService.getUserById(id);
+        return ResponseEntity.ok(user);
     }
 
-@PostMapping("/user")
+    @PostMapping("/user")
     public ResponseEntity<Void> createUser(@RequestBody UserDto user) {
         keycloakService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
