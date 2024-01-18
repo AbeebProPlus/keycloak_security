@@ -3,6 +3,7 @@ package com.security.keycloak.keycloakClients;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import com.security.keycloak.dto.Role;
@@ -89,12 +90,12 @@ public class UserResource {
     }
 
 
-//    @PostMapping("/users/{id}/roles/{roleName}")
-    public Response createRole(String id,
-                               String roleName) {
+    @PostMapping("/users/{id}/roles/{roleName}")
+    public Response createRole(@PathVariable String id,
+                               @PathVariable String roleName) {
         Keycloak keycloak = keycloakUtil.getKeycloakInstance();
         RoleRepresentation role = keycloak.realm(realm).roles().get(roleName).toRepresentation();
-        keycloak.realm(realm).users().get(id).roles().realmLevel().add(Arrays.asList(role));
+        keycloak.realm(realm).users().get(id).roles().realmLevel().add(Collections.singletonList(role));
         return Response.ok().build();
     }
 
