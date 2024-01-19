@@ -47,12 +47,12 @@ public class UserResource {
         keycloakService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-    @GetMapping
-    @RequestMapping("/users")
-    public ResponseEntity<List<UserDto>> getUsers() {
-        List<UserDto> users = keycloakService.getUsers();
-        return ResponseEntity.ok(users);
-    }
+//    @GetMapping
+//    @RequestMapping("/users")
+//    public ResponseEntity<List<UserDto>> getUsers() {
+//        List<UserDto> users = keycloakService.getUsers();
+//        return ResponseEntity.ok(users);
+//    }
 
     @PutMapping("/user")
     public Response updateUser(UserDto user) {
@@ -62,11 +62,11 @@ public class UserResource {
         return Response.ok(user).build();
     }
 
-//    @DeleteMapping("/users/{id}")
-//    public ResponseEntity<Void> deleteUser(@PathVariable("id") String id) {
-//        keycloakService.deleteUserById(id);
-//        return ResponseEntity.noContent().build();
-//    }
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") String id) {
+        keycloakService.deleteUserById(id);
+        return ResponseEntity.noContent().build();
+    }
 
     @GetMapping( "/users/{id}/roles")
     public List<Role> getRoles(@PathVariable("id") String id) {
