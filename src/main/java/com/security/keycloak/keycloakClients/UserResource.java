@@ -62,18 +62,18 @@ public class UserResource {
         return Response.ok(user).build();
     }
 
-    @DeleteMapping("/users/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable("id") String id) {
-        keycloakService.deleteUserById(id);
-        return ResponseEntity.noContent().build();
-    }
-
-//    @GetMapping( "/users/{id}/roles")
-//    public List<Role> getRoles(@PathVariable("id") String id) {
-//        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
-//        return RoleResource.mapRoles(keycloak.realm(realm).users()
-//                .get(id).roles().realmLevel().listAll());
+//    @DeleteMapping("/users/{id}")
+//    public ResponseEntity<Void> deleteUser(@PathVariable("id") String id) {
+//        keycloakService.deleteUserById(id);
+//        return ResponseEntity.noContent().build();
 //    }
+
+    @GetMapping( "/users/{id}/roles")
+    public List<Role> getRoles(@PathVariable("id") String id) {
+        Keycloak keycloak = keycloakUtil.getKeycloakInstance();
+        return RoleResource.mapRoles(keycloak.realm(realm).users()
+                .get(id).roles().realmLevel().listAll());
+    }
 
 
     @PostMapping("/users/{id}/roles/{roleName}") //userId in keycloak
