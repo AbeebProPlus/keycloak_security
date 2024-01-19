@@ -47,12 +47,12 @@ public class UserResource {
         keycloakService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-//    @GetMapping
-//    @RequestMapping("/users")
-//    public ResponseEntity<List<UserDto>> getUsers() {
-//        List<UserDto> users = keycloakService.getUsers();
-//        return ResponseEntity.ok(users);
-//    }
+    @GetMapping
+    @RequestMapping("/users")
+    public ResponseEntity<List<UserDto>> getUsers() {
+        List<UserDto> users = keycloakService.getUsers();
+        return ResponseEntity.ok(users);
+    }
 
     @PutMapping("/user")
     public Response updateUser(UserDto user) {
