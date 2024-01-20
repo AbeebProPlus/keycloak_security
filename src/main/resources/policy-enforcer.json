@@ -1,20 +1,20 @@
-//{
-//  "realm": "keycloak",
-//  "auth-server-url": "http://localhost:8080",
-//  "resource": "Quarkus",
-//  "credentials": {
-//    "secret": "ldT4lkvPC8Tf3rEOLsAMGegZmyUGedgw"
-//  },
-//  "paths" : [
-//   {
-//      "path": "/swagger-ui/*",
-//      "enforcement-mode": "DISABLED"
-//    },{
-//      "path": "/v3/api-docs/*",
-//      "enforcement-mode": "DISABLED"
-//    },{
-//      "path": "/h2-console/*",
-//      "enforcement-mode": "DISABLED"
-//    }
-//  ]
-//}
+{
+  "realm": "keycloak",
+  "auth-server-url": "http://localhost:8080",
+  "resource": "Quarkus",
+  "credentials": {
+    "secret": "ldT4lkvPC8Tf3rEOLsAMGegZmyUGedgw"
+  },
+  "paths" : [
+   {
+      "path": "/swagger-ui/*",
+      "enforcement-mode": "DISABLED"
+    },{
+      "path": "/v3/api-docs/*",
+      "enforcement-mode": "DISABLED"
+    },{
+      "path": "/h2-console/*",
+      "enforcement-mode": "DISABLED"
+    }
+  ]
+}
